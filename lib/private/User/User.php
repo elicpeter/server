@@ -44,6 +44,7 @@ use OCP\UserInterface;
 use OCP\Util;
 use Psr\Log\LoggerInterface;
 
+use RuntimeException;
 use function json_decode;
 use function json_encode;
 
@@ -54,6 +55,7 @@ class User implements IUser {
 	private IURLGenerator $urlGenerator;
 	protected ?IAccountManager $accountManager = null;
 
+	/** @var ?non-empty-string $displayName */
 	private ?string $displayName = null;
 	private ?bool $enabled = null;
 	private ?string $home = null;
@@ -63,6 +65,7 @@ class User implements IUser {
 	private ?IAvatarManager $avatarManager = null;
 
 	public function __construct(
+		/** @var non-empty-string $uid */
 		private string $uid,
 		private ?UserInterface $backend,
 		private IEventDispatcher $dispatcher,
@@ -646,5 +649,23 @@ class User implements IUser {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value, $oldValue]);
 		}
+	}
+
+	public function getUserAvatarUrlLight(int $size): string {
+		$url = Server::get(IURLGenerator::class)->linkToRouteAbsolute('core.avatar.getAvatar', ['userId' => $this->uid, 'size' => $size]);
+		if ($url === '') {
+			throw new RuntimeException('The URL is empty.');
+		}
+
+		return $url;
+	}
+
+	public function getUserAvatarUrlDark(int $size): string {
+		$url = Server::get(IURLGenerator::class)->linkToRouteAbsolute('core.avatar.getAvatarDark', ['userId' => $this->uid, 'size' => $size]);
+		if ($url === '') {
+			throw new RuntimeException('The URL is empty.');
+		}
+
+		return $url;
 	}
 }

@@ -26,7 +26,7 @@ interface IUser {
 	/**
 	 * get the user id
 	 *
-	 * @return string
+	 * @return non-empty-string
 	 * @since 8.0.0
 	 */
 	public function getUID();
@@ -34,7 +34,7 @@ interface IUser {
 	/**
 	 * get the display name for the user, if no specific display name is set it will fallback to the user id
 	 *
-	 * @return string
+	 * @return non-empty-string
 	 * @since 8.0.0
 	 */
 	public function getDisplayName();
@@ -320,4 +320,18 @@ interface IUser {
 	 * @since 27.0.0
 	 */
 	public function setManagerUids(array $uids): void;
+
+	/**
+	 * @param 64|512 $size
+	 * @return non-empty-string
+	 * @since 34.0.0
+	 */
+	public function getUserAvatarUrlLight(int $size): string;
+
+	/**
+	 * @param 64|512 $size
+	 * @return non-empty-string
+	 * @since 34.0.0
+	 */
+	public function getUserAvatarUrlDark(int $size): string;
 }

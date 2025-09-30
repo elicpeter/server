@@ -35,17 +35,29 @@
 		<file name="lib/public/DB/QueryBuilder/ITypedQueryBuilder.php"/>
 		<file name="lib/private/Share20/ShareHelper.php"/>
 		<file name="lib/public/Share/IShareHelper.php"/>
+		<directory name="lib/public/Sharing"/>
+		<directory name="lib/private/Sharing"/>
+		<directory name="tests/lib/Sharing"/>
+		<directory name="apps/sharing"/>
+		<directory name="apps/files/lib/Sharing"/>
+		<directory name="apps/files/tests/Sharing"/>
+		<directory name="core/Sharing"/>
+		<directory name="tests/Core/Sharing"/>
 		<ignoreFiles>
 			<directory name="apps/**/composer"/>
 			<directory name="lib/composer"/>
 			<directory name="lib/l10n"/>
 			<directory name="3rdparty"/>
+			<file name="lib/public/AppFramework/OCSController.php"/>
 		</ignoreFiles>
 	</projectFiles>
 	<extraFiles>
 		<directory name="apps/dav/lib"/>
+		<directory name="apps/files/lib"/>
 		<directory name="apps/settings/lib"/>
 		<directory name="3rdparty"/>
+		<directory name="tests/lib"/>
+		<directory name="vendor-bin/phpunit/vendor/phpunit/phpunit"/>
 	</extraFiles>
 	<stubs>
 		<!-- Psalm does not find methods in here through <extraFiles/> 🤷‍♀️ -->

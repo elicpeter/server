@@ -6,9 +6,11 @@ declare(strict_types=1);
  * SPDX-FileCopyrightText: 2016 ownCloud, Inc.
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+
 namespace OCA\Files\AppInfo;
 
 use Closure;
+use OC\Core\Sharing\RecipientType\TokenShareRecipientType;
 use OCA\Files\AdvancedCapabilities;
 use OCA\Files\Capabilities;
 use OCA\Files\Collaboration\Resources\Listener;
@@ -30,6 +32,8 @@ use OCA\Files\Search\FilesSearchProvider;
 use OCA\Files\Service\TagService;
 use OCA\Files\Service\UserConfig;
 use OCA\Files\Service\ViewConfig;
+use OCA\Files\Sharing\Feature\NodeGridViewShareFeature;
+use OCA\Files\Sharing\SourceType\NodeShareSourceType;
 use OCP\Activity\IManager as IActivityManager;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -52,7 +56,9 @@ use OCP\IRequest;
 use OCP\IServerContainer;
 use OCP\ITagManager;
 use OCP\IUserSession;
+use OCP\Server;
 use OCP\Share\IManager as IShareManager;
+use OCP\Sharing\IRegistry;
 use OCP\Util;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -128,6 +134,11 @@ class Application extends App implements IBootstrap {
 
 		$context->registerConfigLexicon(ConfigLexicon::class);
 
+		$registry = Server::get(IRegistry::class);
+		$registry->registerSourceType(new NodeShareSourceType());
+		$registry->registerFeature(new NodeGridViewShareFeature());
+		$registry->registerFeatureCompatibleWithSourceType(NodeGridViewShareFeature::class, NodeShareSourceType::class);
+		$registry->registerFeatureCompatibleWithRecipientType(NodeGridViewShareFeature::class, TokenShareRecipientType::class);
 	}
 
 	public function boot(IBootContext $context): void {
