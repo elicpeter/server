@@ -9,5 +9,8 @@
 		"allow-plugins": {
 			"composer/package-versions-deprecated": true
 		}
+	},
+	"require-dev": {
+		"psalm/plugin-phpunit": "^0.19.0"
 	}
 }
