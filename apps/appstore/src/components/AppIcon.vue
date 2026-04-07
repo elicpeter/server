@@ -55,7 +55,7 @@ watch(() => app.icon, async () => {
 	justify-content: center;
 }
 
-.appImage__image {
+.appIcon__image {
 	filter: var(--invert-if-dark);
 	object-fit: cover;
 	height: 100%;

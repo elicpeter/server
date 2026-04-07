@@ -9,7 +9,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
-import AppTable from '../components/AppTable.vue'
+import AppTable from '../components/AppTable/AppTable.vue'
 import { useAppsStore } from '../store/apps.ts'
 
 const route = useRoute()
@@ -40,19 +40,14 @@ const apps = computed(() => {
 		</template>
 	</NcEmptyContent>
 
-	<AppTable v-else :apps />
+	<AppTable
+		v-else
+		:class="$style.appstoreManage__appTable"
+		:apps />
 </template>
 
-<style scoped>
-.empty-content__loading {
-	height: 100%;
-}
-
-.app-settings-content__label {
-	margin-block-start: var(--app-navigation-padding);
-	margin-inline-start: calc(var(--default-clickable-area) + var(--app-navigation-padding) * 2);
-	min-height: var(--default-clickable-area);
-	line-height: var(--default-clickable-area);
-	vertical-align: center;
+<style module>
+.appstoreManage__appTable {
+	margin-bottom: var(--body-container-margin);
 }
 </style>

@@ -50,6 +50,12 @@ export interface IAppstoreAppResponse {
 	icon?: string
 	screenshot?: string
 
+	/**
+	 * Groups this app is limited to.
+	 * (only available if app is already installed)
+	 */
+	groups?: string[]
+
 	score: number
 	ratingNumThresholdReached: boolean
 
@@ -58,10 +64,9 @@ export interface IAppstoreAppResponse {
 	internal: boolean
 	removable: boolean
 	installed: boolean
-	canInstall: boolean
-	canUnInstall: boolean
 	isCompatible: boolean
 	needsDownload: boolean
+	missingDependencies?: string[]
 	update?: string
 
 	appstoreData?: IAppstoreAppData
