@@ -9,6 +9,7 @@ import type { IAppstoreApp, IAppstoreCategory } from '../apps.d.ts'
 import axios from '@nextcloud/axios'
 import { addPasswordConfirmationInterceptors, PwdConfirmationMode } from '@nextcloud/password-confirmation'
 import { generateOcsUrl } from '@nextcloud/router'
+import PQueue from 'p-queue'
 import { APPSTORE_CATEGORY_ICONS } from '../constants.ts'
 
 addPasswordConfirmationInterceptors(axios)
@@ -24,13 +25,17 @@ const Url = Object.freeze({
 	update: `${BASE_URL}/apps/update`,
 })
 
+const queue = new PQueue({ concurrency: 1 })
+
 /**
  * Force enable app by ignoring its dependencies
  *
  * @param appId - The app to force enable
  */
 export async function forceEnableApp(appId: string) {
-	await axios.post(Url.forceEnable, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	return queue.add(async () => {
+		await axios.post(Url.forceEnable, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	})
 }
 
 /**
@@ -39,7 +44,9 @@ export async function forceEnableApp(appId: string) {
  * @param appId - The app to enable
  */
 export async function enableApp(appId: string) {
-	await axios.post(Url.enable, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	return queue.add(async () => {
+		await axios.post(Url.enable, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	})
 }
 
 /**
@@ -48,7 +55,9 @@ export async function enableApp(appId: string) {
  * @param appId - The app to disable
  */
 export async function disableApp(appId: string) {
-	await axios.post(Url.disable, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	return queue.add(async () => {
+		await axios.post(Url.disable, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	})
 }
 
 /**
@@ -57,7 +66,9 @@ export async function disableApp(appId: string) {
  * @param appId - The app id to update
  */
 export async function updateApp(appId: string) {
-	await axios.post(Url.update, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	return queue.add(async () => {
+		await axios.post(Url.update, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	})
 }
 
 /**
@@ -66,7 +77,9 @@ export async function updateApp(appId: string) {
  * @param appId - The app to uninstall
  */
 export async function uninstallApp(appId: string) {
-	await axios.post(Url.uninstall, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	return queue.add(async () => {
+		await axios.post(Url.uninstall, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+	})
 }
 
 /**
