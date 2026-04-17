@@ -8,19 +8,20 @@ declare(strict_types=1);
  */
 namespace OCA\Files_External\Tests\Controller;
 
-use OC\User\User;
 use OCA\Files_External\Controller\UserStoragesController;
 use OCA\Files_External\Lib\Storage\SMB;
 use OCA\Files_External\Lib\StorageConfig;
 use OCA\Files_External\Service\BackendService;
 use OCA\Files_External\Service\UserStoragesService;
 use OCP\AppFramework\Http;
-use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Server;
+use OCP\UserInterface;
 use Psr\Log\LoggerInterface;
 
 class UserStoragesControllerTest extends StoragesControllerTestCase {
@@ -42,9 +43,10 @@ class UserStoragesControllerTest extends StoragesControllerTestCase {
 
 	private function createController(bool $allowCreateLocal = true) {
 		$session = $this->createMock(IUserSession::class);
+		$userManager = Server::get(IUserManager::class);
+		$userBackend = $this->getMockBuilder(UserInterface::class)->getMock();
 		$session->method('getUser')
-			->willReturn(new User('test', null, $this->createMock(IEventDispatcher::class)));
-
+			->willReturn($userManager->getUserObject('test', $userBackend));
 		$config = $this->createMock(IConfig::class);
 		$config->method('getSystemValue')
 			->with('files_external_allow_create_new_local', true)

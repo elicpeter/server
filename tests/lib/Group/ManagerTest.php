@@ -22,6 +22,7 @@ use OCP\GroupInterface;
 use OCP\ICacheFactory;
 use OCP\IUser;
 use OCP\Security\Ip\IRemoteAddress;
+use OCP\UserInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Test\TestCase;
@@ -807,10 +808,12 @@ class ManagerTest extends TestCase {
 			->with('testgroup')
 			->willReturn(true);
 
+		$userBackend = $this->createMock(UserInterface::class);
+
 		$backend->expects($this->once())
 			->method('searchInGroup')
 			->with('testgroup', '', 1, 0)
-			->willReturn([new User('user2', null, $this->dispatcher)]);
+			->willReturn([$this->userManager->getUserObject('user2', $userBackend)]);
 
 		$this->userManager->expects($this->never())->method('get');
 
