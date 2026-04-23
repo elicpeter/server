@@ -76,9 +76,11 @@ class ApiController extends OCSController {
 
 	/**
 	 * Get all available apps
+	 *
+	 * @param bool $details - Whether to include detailed appstore information about the app
 	 */
 	#[ApiRoute(verb: 'GET', url: '/api/v1/apps')]
-	public function listApps(): DataResponse {
+	public function listApps(bool $details = false): DataResponse {
 		$apps = $this->getAllApps();
 
 		$ignoreMaxApps = $this->config->getSystemValue('app_install_overwrite', []);
@@ -88,12 +90,16 @@ class ApiController extends OCSController {
 		}
 
 		// Extend existing app details
-		$apps = array_map(function (array $appData) use ($ignoreMaxApps) {
+		$apps = array_map(function (array $appData) use ($ignoreMaxApps, $details) {
 			if (isset($appData['appstoreData'])) {
 				$appstoreData = $appData['appstoreData'];
 				$appData['screenshot'] = $this->createProxyPreviewUrl($appstoreData['screenshots'][0]['url'] ?? '');
 				$appData['category'] = $appstoreData['categories'];
 				$appData['releases'] = $appstoreData['releases'];
+
+				if (!$details) {
+					unset($appData['appstoreData']);
+				}
 			}
 
 			$newVersion = $this->installer->isUpdateAvailable($appData['id']);
@@ -173,6 +179,7 @@ class ApiController extends OCSController {
 	public function disableApp(string $appId): DataResponse {
 		try {
 			$appId = $this->appManager->cleanAppId($appId);
+			$this->appManager->removeOverwriteNextcloudRequirement($appId);
 			$this->appManager->disableApp($appId);
 			return new DataResponse([]);
 		} catch (\Exception $e) {
