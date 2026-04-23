@@ -42,10 +42,11 @@ export async function forceEnableApp(appId: string) {
  * Enable an app by its app id
  *
  * @param appId - The app to enable
+ * @param groups - The groups to limit access to
  */
-export async function enableApp(appId: string) {
+export async function enableApp(appId: string, groups?: string[]) {
 	return queue.add(async () => {
-		await axios.post(Url.enable, { appId }, { confirmPassword: PwdConfirmationMode.Strict })
+		await axios.post(Url.enable, { appId, groups }, { confirmPassword: PwdConfirmationMode.Strict })
 	})
 }
 
