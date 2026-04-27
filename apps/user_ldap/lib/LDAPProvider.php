@@ -12,6 +12,7 @@ use LDAP\Connection;
 use OCA\User_LDAP\User\DeletedUsersIndex;
 use OCP\GroupInterface;
 use OCP\IGroupManager;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\LDAP\IDeletionFlagSupport;
 use OCP\LDAP\ILDAPProvider;
@@ -300,5 +301,9 @@ class LDAPProvider implements ILDAPProvider, IDeletionFlagSupport {
 
 		$connection->writeToCache($key, $values);
 		return $values;
+	}
+
+	public function findOneUserByAttributeValue(string $attribute, string $searchTerm): ?IUser {
+		return $this->userBackend->getUserFromCustomAttribute($attribute, $searchTerm);
 	}
 }
