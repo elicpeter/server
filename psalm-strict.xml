@@ -7,7 +7,7 @@
 	errorLevel="1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="https://getpsalm.org/schema/config"
-	xsi:schemaLocation="https://getpsalm.org/schema/config"
+	xsi:schemaLocation="https://getpsalm.org/schema/config https://getpsalm.org/schema/config"
 	resolveFromConfigFile="false"
 	findUnusedBaselineEntry="true"
 	findUnusedCode="false"
@@ -32,6 +32,7 @@
 		<file name="lib/public/DB/QueryBuilder/ITypedQueryBuilder.php"/>
 		<file name="lib/private/Share20/ShareHelper.php"/>
 		<file name="lib/public/Share/IShareHelper.php"/>
+		<directory name="apps/appstore/lib" />
 		<ignoreFiles>
 			<directory name="apps/**/composer"/>
 			<directory name="apps/**/tests"/>

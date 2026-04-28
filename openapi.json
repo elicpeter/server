@@ -17055,13 +17055,13 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/settings/api/v1/apps/categories": {
+        "/ocs/v2.php/apps/appstore/api/v1/apps/categories": {
             "get": {
-                "operationId": "settings-api-list-categories",
+                "operationId": "appstore-api-list-categories",
                 "summary": "Get all available categories",
                 "description": "This endpoint requires admin access",
                 "tags": [
-                    "settings/api"
+                    "appstore/api"
                 ],
                 "security": [
                     {
@@ -17188,13 +17188,13 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/settings/api/v1/apps": {
+        "/ocs/v2.php/apps/appstore/api/v1/apps": {
             "get": {
-                "operationId": "settings-api-list-apps",
+                "operationId": "appstore-api-list-apps",
                 "summary": "Get all available apps",
                 "description": "This endpoint requires admin access",
                 "tags": [
-                    "settings/api"
+                    "appstore/api"
                 ],
                 "security": [
                     {
@@ -17251,19 +17251,36 @@
                                                     "items": {
                                                         "type": "object",
                                                         "required": [
-                                                            "id",
-                                                            "name",
-                                                            "description"
+                                                            "groups",
+                                                            "internal",
+                                                            "isCompatible",
+                                                            "missingMaxNextcloudVersion",
+                                                            "missingMinNextcloudVersion"
                                                         ],
                                                         "properties": {
-                                                            "id": {
-                                                                "type": "string"
+                                                            "groups": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
                                                             },
-                                                            "name": {
-                                                                "type": "string"
+                                                            "internal": {
+                                                                "type": "boolean"
                                                             },
-                                                            "description": {
-                                                                "type": "string"
+                                                            "isCompatible": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "missingDependencies": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "missingMaxNextcloudVersion": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "missingMinNextcloudVersion": {
+                                                                "type": "boolean"
                                                             }
                                                         }
                                                     }
@@ -17334,13 +17351,13 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/settings/api/v1/apps/enable": {
+        "/ocs/v2.php/apps/appstore/api/v1/apps/enable": {
             "post": {
-                "operationId": "settings-api-enable-app",
+                "operationId": "appstore-api-enable-app",
                 "summary": "Enable one apps",
                 "description": "App will be enabled for specific groups only if $groups is defined\nThis endpoint requires admin access\nThis endpoint requires password confirmation",
                 "tags": [
-                    "settings/api"
+                    "appstore/api"
                 ],
                 "security": [
                     {
@@ -17487,13 +17504,13 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/settings/api/v1/apps/disable": {
+        "/ocs/v2.php/apps/appstore/api/v1/apps/disable": {
             "post": {
-                "operationId": "settings-api-disable-app",
+                "operationId": "appstore-api-disable-app",
                 "summary": "Disable an app",
                 "description": "This endpoint requires admin access\nThis endpoint requires password confirmation",
                 "tags": [
-                    "settings/api"
+                    "appstore/api"
                 ],
                 "security": [
                     {
@@ -17624,13 +17641,13 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/settings/api/v1/apps/uninstall": {
+        "/ocs/v2.php/apps/appstore/api/v1/apps/uninstall": {
             "post": {
-                "operationId": "settings-api-uninstall-app",
+                "operationId": "appstore-api-uninstall-app",
                 "summary": "Uninstall an app. This will disable the app - if needed - and then remove the app from the system",
                 "description": "This endpoint requires admin access\nThis endpoint requires password confirmation",
                 "tags": [
-                    "settings/api"
+                    "appstore/api"
                 ],
                 "security": [
                     {
@@ -17761,13 +17778,13 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/settings/api/v1/apps/update": {
+        "/ocs/v2.php/apps/appstore/api/v1/apps/update": {
             "post": {
-                "operationId": "settings-api-update-app",
+                "operationId": "appstore-api-update-app",
                 "summary": "Update an app",
                 "description": "This endpoint requires admin access\nThis endpoint requires password confirmation",
                 "tags": [
-                    "settings/api"
+                    "appstore/api"
                 ],
                 "security": [
                     {
@@ -17898,13 +17915,13 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/settings/api/v1/apps/force": {
+        "/ocs/v2.php/apps/appstore/api/v1/apps/force": {
             "post": {
-                "operationId": "settings-api-force",
+                "operationId": "appstore-api-force",
                 "summary": "Force enable an app. This will override the nextcloud version requirement for an app",
                 "description": "This endpoint requires admin access\nThis endpoint requires password confirmation",
                 "tags": [
-                    "settings/api"
+                    "appstore/api"
                 ],
                 "security": [
                     {

@@ -82,7 +82,7 @@ class ApiController extends OCSController {
 	 * Get all available apps
 	 *
 	 * @param bool $details - Whether to include detailed appstore information about the app
-	 * @return DataResponse<Http::STATUS_OK, list<array{id: string, name: string, description: string, ...}>, array{}>
+	 * @return DataResponse<Http::STATUS_OK, list<array{groups: list<string>, internal: bool, isCompatible: bool, missingDependencies?: list<string>, missingMaxNextcloudVersion: bool, missingMinNextcloudVersion: bool, ...<array-key, mixed>}>, array{}>
 	 *
 	 * 200: The apps were found successfully
 	 */
