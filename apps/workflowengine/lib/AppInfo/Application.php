@@ -40,7 +40,14 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function boot(IBootContext $context): void {
+		$context->injectFn(Closure::fromCallable([$this, 'emitRuntimeEvent']));
 		$context->injectFn(Closure::fromCallable([$this, 'registerRuleListeners']));
+	}
+
+	private function emitRuntimeEvent(IEventDispatcher $dispatcher, ContainerInterface $container): void {
+		/** @var Manager $manager */
+		$manager = $container->get(Manager::class);
+		$manager->reloadRuntimeOperations();
 	}
 
 	private function registerRuleListeners(IEventDispatcher $dispatcher,
@@ -48,7 +55,10 @@ class Application extends App implements IBootstrap {
 		LoggerInterface $logger): void {
 		/** @var Manager $manager */
 		$manager = $container->get(Manager::class);
-		$configuredEvents = $manager->getAllConfiguredEvents();
+		$configuredEvents = array_merge_recursive(
+			$manager->getAllConfiguredEvents(),
+			$manager->getAllConfiguredRuntimeEvents(),
+		);
 
 		foreach ($configuredEvents as $operationClass => $events) {
 			foreach ($events as $entityClass => $eventNames) {
