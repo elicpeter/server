@@ -60,6 +60,10 @@ class ApiController extends OCSController {
 
 	/**
 	 * Get all available categories
+	 *
+	 * @return DataResponse<Http::STATUS_OK, list<array{id: string, displayName: string}>, array{}>
+	 *
+	 * 200: The categories were found successfully
 	 */
 	#[ApiRoute(verb: 'GET', url: '/api/v1/apps/categories')]
 	public function listCategories(): DataResponse {
@@ -78,6 +82,9 @@ class ApiController extends OCSController {
 	 * Get all available apps
 	 *
 	 * @param bool $details - Whether to include detailed appstore information about the app
+	 * @return DataResponse<Http::STATUS_OK, list<array{id: string, name: string, description: string, ...}>, array{}>
+	 *
+	 * 200: The apps were found successfully
 	 */
 	#[ApiRoute(verb: 'GET', url: '/api/v1/apps')]
 	public function listApps(bool $details = false): DataResponse {
@@ -142,8 +149,12 @@ class ApiController extends OCSController {
 	 * App will be enabled for specific groups only if $groups is defined
 	 *
 	 * @param string $appId - The app to enable
-	 * @param array $groups - The groups to enable the app for
-	 * @return DataResponse
+	 * @param list<string> $groups - The groups to enable the app for
+	 *
+	 * @return DataResponse<Http::STATUS_OK, array{update_required: bool}, array{}>
+	 * @throws OCSException - if the app could not be enabled
+	 *
+	 * 200: App successfully enabled
 	 */
 	#[PasswordConfirmationRequired(strict: true)]
 	#[ApiRoute(verb: 'POST', url: '/api/v1/apps/enable')]
@@ -173,6 +184,13 @@ class ApiController extends OCSController {
 
 	/**
 	 * Disable an app
+	 *
+	 * @param string $appId - The app to disable
+	 *
+	 * @return DataResponse<Http::STATUS_OK, array{}, array{}>
+	 * @throws OCSException - if the app could not be disabled
+	 *
+	 * 200: App successfully disabled
 	 */
 	#[PasswordConfirmationRequired(strict: true)]
 	#[ApiRoute(verb: 'POST', url: '/api/v1/apps/disable')]
@@ -189,7 +207,14 @@ class ApiController extends OCSController {
 	}
 
 	/**
-	 * Uninstall an app
+	 * Uninstall an app.
+	 * This will disable the app - if needed - and then remove the app from the system
+	 *
+	 * @param string $appId - The app to uninstall
+	 * @return DataResponse<Http::STATUS_OK, array{}, array{}>
+	 * @throws OCSException - if the app could not be uninstalled
+	 *
+	 * 200: App successfully uninstalled
 	 */
 	#[PasswordConfirmationRequired(strict: true)]
 	#[ApiRoute(verb: 'POST', url: '/api/v1/apps/uninstall')]
@@ -211,6 +236,12 @@ class ApiController extends OCSController {
 
 	/**
 	 * Update an app
+	 *
+	 * @param string $appId - The app to update
+	 * @return DataResponse<Http::STATUS_OK, array{}, array{}>
+	 * @throws OCSException - if the app could not be updated
+	 *
+	 * 200: App successfully updated
 	 */
 	#[PasswordConfirmationRequired(strict: true)]
 	#[ApiRoute(verb: 'POST', url: '/api/v1/apps/update')]
@@ -233,8 +264,12 @@ class ApiController extends OCSController {
 	}
 	/**
 	 * Force enable an app.
+	 * This will override the nextcloud version requirement for an app
 	 *
-	 * @return JSONResponse
+	 * @param string $appId - The app to force enable
+	 * @return DataResponse<Http::STATUS_OK, array{}, array{}>
+	 *
+	 * 200: App successfully force enabled
 	 */
 	#[PasswordConfirmationRequired(strict: true)]
 	#[ApiRoute(verb: 'POST', url: '/api/v1/apps/force')]
